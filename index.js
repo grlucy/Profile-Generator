@@ -4,6 +4,7 @@ const fs = require("fs");
 const util = require("util");
 const inquirer = require("inquirer");
 const electron = require("electron-html-to");
+const axios = require("axios");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -28,7 +29,10 @@ function promptUser() {
 async function init() {
   try {
     const userData = await promptUser();
-    console.log(userData);
+    const githubData = await axios.get(
+      `https://api.github.com/users/${userData.username}`
+    );
+    console.log(githubData.data.blog);
   } catch (err) {
     console.log(err);
   }

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/grlucy/Profile-Generator#readme",
   "dependencies": {
+    "axios": "^0.19.1",
     "debug": "^4.1.1",
     "electron-html-to": "^2.6.0",
     "inquirer": "^7.0.3"
