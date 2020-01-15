@@ -37,8 +37,7 @@ function promptUser() {
 // Number of GitHub stars
 // Number of users following
 
-// Replace: header img src
-function profileHTML(userData, githubData) {
+function profileHTML(userData, githubData, githubStarsData) {
   return `
  <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +45,7 @@ function profileHTML(userData, githubData) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>${githubData.name}'s Profile</title>
+    <title>${githubData.data.name}'s Profile</title>
     <!--Bootstrap-->
     <link
       rel="stylesheet"
@@ -135,9 +134,9 @@ async function init() {
     const githubStarsData = await axios.get(
       `https://api.github.com/users/${userData.username}/starred`
     );
-    console.log(githubData.data.blog);
-    console.log(githubStarsData.data.length);
-    console.log(userData.color);
+    const html = profileHTML(userData, githubData, githubStarsData);
+    await writeFileAsync(`${userData.username}.html`, html);
+    console.log(`Successfully wrote ${userData.username}.html`);
   } catch (err) {
     console.log(err);
   }
