@@ -5,6 +5,11 @@ const axios = require("axios");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
+// Puppeteer
+
+const puppeteer = require("puppeteer");
+// const fs = require("fs-extra");
+
 // Prompt user for GitHub user name and favorite color. Only includes colors that will be dark enough for readability of white text.
 
 function promptUser() {
@@ -66,10 +71,53 @@ function profileHTML(userData, githubData, githubStarsData) {
       crossorigin="anonymous"
     />
     <!--CSS-->
-    <link rel="stylesheet" href="./assets/css/style.css" />
     <style>
       .user-color {
         background-color: ${userData.color};
+      }
+      body {
+        background-color: #ddd;
+        color: #fff;
+      }
+
+      h3 {
+        color: #333;
+      }
+
+      .header-position {
+        position: relative;
+        top: 60px;
+        border-radius: 3px;
+        padding: 20px;
+        padding-top: 0;
+      }
+
+      .header-position img {
+        position: relative;
+        top: -40px;
+        border-radius: 50%;
+        border: 9px solid #fff;
+      }
+
+      .header-links a,
+      .header-links a:hover,
+      .header-links a:active,
+      .header-links a:visited {
+        color: white;
+        text-decoration: none;
+        margin: 10px 25px;
+        font-weight: 700;
+      }
+
+      section {
+        background-color: #fff;
+        padding: 85px 0 20px;
+      }
+
+      .data-card {
+        margin: 30px;
+        padding: 20px;
+        border-radius: 3px;
       }
     </style>
   </head>
@@ -153,6 +201,21 @@ async function init() {
     console.log(`Successfully wrote ${userData.username}.html`);
 
     // Create .pdf file
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setContent(html);
+    await page.emulateMediaFeatures("screen");
+    await page.pdf({
+      path: `${userData.username}.pdf`,
+      format: "A4",
+      printBackground: true
+    });
+
+    console.log(`Successfully wrote ${userData.username}.pdf`);
+    await browser.close();
+    process.exit();
   } catch (err) {
     console.log(err);
   }
