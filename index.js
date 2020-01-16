@@ -6,7 +6,7 @@ const axios = require("axios");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
-// Prompt user for GitHub user name and favorite color.
+// Prompt user for GitHub user name and favorite color. Only includes colors that will be dark enough for readability of white text.
 
 function promptUser() {
   return inquirer.prompt([
