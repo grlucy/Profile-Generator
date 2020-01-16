@@ -2,13 +2,9 @@ const fs = require("fs");
 const util = require("util");
 const inquirer = require("inquirer");
 const axios = require("axios");
+const puppeteer = require("puppeteer");
 
 const writeFileAsync = util.promisify(fs.writeFile);
-
-// Puppeteer
-
-const puppeteer = require("puppeteer");
-// const fs = require("fs-extra");
 
 // Prompt user for GitHub user name and favorite color. Only includes colors that will be dark enough for readability of white text.
 
@@ -187,8 +183,6 @@ function profileHTML(userData, githubData, githubStarsData) {
 
 async function init() {
   try {
-    // Create .html file
-
     const userData = await promptUser();
     const githubData = await axios.get(
       `https://api.github.com/users/${userData.username}`
@@ -197,8 +191,11 @@ async function init() {
       `https://api.github.com/users/${userData.username}/starred`
     );
     const html = profileHTML(userData, githubData, githubStarsData);
-    await writeFileAsync(`${userData.username}.html`, html);
-    console.log(`Successfully wrote ${userData.username}.html`);
+
+    // Create .html file
+
+    await writeFileAsync(`profile_${userData.username}.html`, html);
+    console.log(`Successfully wrote profile_${userData.username}.html`);
 
     // Create .pdf file
 
@@ -208,12 +205,12 @@ async function init() {
     await page.setContent(html);
     await page.emulateMediaFeatures("screen");
     await page.pdf({
-      path: `${userData.username}.pdf`,
+      path: `profile_${userData.username}.pdf`,
       format: "A4",
       printBackground: true
     });
 
-    console.log(`Successfully wrote ${userData.username}.pdf`);
+    console.log(`Successfully wrote profile_${userData.username}.pdf`);
     await browser.close();
     process.exit();
   } catch (err) {
