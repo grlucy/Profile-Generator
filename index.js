@@ -1,7 +1,6 @@
 const fs = require("fs");
 const util = require("util");
 const inquirer = require("inquirer");
-const electron = require("electron-html-to");
 const axios = require("axios");
 
 const writeFileAsync = util.promisify(fs.writeFile);
@@ -140,6 +139,8 @@ function profileHTML(userData, githubData, githubStarsData) {
 
 async function init() {
   try {
+    // Create .html file
+
     const userData = await promptUser();
     const githubData = await axios.get(
       `https://api.github.com/users/${userData.username}`
@@ -150,6 +151,8 @@ async function init() {
     const html = profileHTML(userData, githubData, githubStarsData);
     await writeFileAsync(`${userData.username}.html`, html);
     console.log(`Successfully wrote ${userData.username}.html`);
+
+    // Create .pdf file
   } catch (err) {
     console.log(err);
   }

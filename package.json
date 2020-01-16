@@ -19,8 +19,9 @@
   "dependencies": {
     "axios": "^0.19.1",
     "debug": "^4.1.1",
-    "electron": "^7.1.9",
-    "electron-html-to": "^2.6.0",
-    "inquirer": "^7.0.3"
+    "inquirer": "^7.0.3",
+    "marked": "^0.8.0",
+    "https-proxy-agent": "^4.0.0",
+    "electron-pdf": "^4.0.8"
   }
 }
